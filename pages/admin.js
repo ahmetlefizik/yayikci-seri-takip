@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const ADMIN_PASSWORD = "1234";
 
@@ -9,6 +9,19 @@ export default function Admin() {
   const [password, setPassword] = useState("");
 
   const today = new Date().toISOString().split("T")[0];
+
+  // Sayfa yüklendiğinde localStorage’dan verileri al
+  useEffect(() => {
+    const saved = localStorage.getItem("yayikciData");
+    if (saved) {
+      setData(JSON.parse(saved));
+    }
+  }, []);
+
+  // data değişince localStorage’a kaydet
+  useEffect(() => {
+    localStorage.setItem("yayikciData", JSON.stringify(data));
+  }, [data]);
 
   const handleLogin = () => {
     if (password === ADMIN_PASSWORD) {
