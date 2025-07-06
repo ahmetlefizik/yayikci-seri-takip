@@ -1,66 +1,20 @@
-import { useState } from "react";
-
 export default function Home() {
-  const [input, setInput] = useState("");
-  const [data, setData] = useState({});
-
-  const today = new Date().toISOString().split("T")[0];
-
-  const handleSubmit = () => {
-    const numbers = input
-      .split(",")
-      .map((n) => n.trim())
-      .filter((n) => n !== "");
-
-    const updated = { ...data };
-
-    // Güncelleme
-    Object.keys(updated).forEach((num) => {
-      if (numbers.includes(num)) {
-        updated[num].seri += 1;
-        updated[num].lastDate = today;
-      } else {
-        const last = updated[num].lastDate;
-        if (last !== today) {
-          updated[num].seri = 0;
-        }
-      }
-    });
-
-    // Yeni gelenler
-    numbers.forEach((num) => {
-      if (!updated[num]) {
-        updated[num] = {
-          seri: 1,
-          lastDate: today,
-        };
-      }
-    });
-
-    setData(updated);
-    setInput("");
-  };
+  const [data] = React.useState({
+    /* 
+    Örnek veri, bu kısmı gerçek veriye bağlamak için backend gerekebilir.
+    Şimdilik admin güncellemeleri Vercel üzerinde kalacak,  
+    gerçek projede veritabanı veya API gerekir.
+    */
+    "1": { seri: 3, lastDate: "2025-07-05" },
+    "2": { seri: 1, lastDate: "2025-07-05" },
+    "5": { seri: 4, lastDate: "2025-07-05" },
+  });
 
   const sorted = Object.entries(data).sort((a, b) => b[1].seri - a[1].seri);
 
   return (
     <div style={{ maxWidth: 600, margin: "40px auto", fontFamily: "Arial, sans-serif" }}>
-      <h1 style={{ textAlign: "center" }}>🔥 Yayıkçı Seri Takip Sistemi</h1>
-      <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-        <input
-          style={{ flex: 1, padding: 8, fontSize: 16 }}
-          type="text"
-          placeholder="1,2,3,5,7"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
-        <button
-          style={{ padding: "8px 16px", fontSize: 16, cursor: "pointer" }}
-          onClick={handleSubmit}
-        >
-          Güncelle
-        </button>
-      </div>
+      <h1 style={{ textAlign: "center" }}>🔥 Yayıkçı Seri Takip</h1>
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <tr style={{ borderBottom: "2px solid #000" }}>
@@ -84,3 +38,4 @@ export default function Home() {
     </div>
   );
 }
+
